@@ -1,0 +1,11 @@
+*.mod
+*.o
+*main
+*RocketCombustor
+*MACOSX*
+*.zip
+*.Ds_Store
+*.in
+*.tec
+*.dat
+*.out
