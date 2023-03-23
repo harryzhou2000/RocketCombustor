@@ -9,3 +9,7 @@
 *.tec
 *.dat
 *.out
+*.msh
+*.vtk
+*.geo
+*readgmsh

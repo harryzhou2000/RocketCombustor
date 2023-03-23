@@ -40,8 +40,9 @@ $(PROGRAM): module.f90 \
 			Time_BackwardEuler.f90 \
 			Time_ImplicitMidpoint.f90 \
 			Time_BDF2.f90
-
-	mpiifort -qmkl -O3 -autodouble -fpconstant -o $@ $^
+	mpifort -o $@ $^ -O3 -lblas -llapack
+# mpiifort -qmkl -O3 -autodouble -fpconstant -o $@ $^
+	
 
 .PHONY:clean
 clean:
