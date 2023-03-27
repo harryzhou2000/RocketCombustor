@@ -37,6 +37,7 @@ function GaussInteg_Tri( fun,xv1,xv2,xv3 )
                                     0.077113760890257*(fun(vx8)+fun(vx9)+fun(vx10)+fun(vx11)+fun(vx12)+fun(vx13))
     
     GaussInteg_Tri = GaussInteg_Tri* area
+    ! write(*,*) GaussInteg_Tri, area, "Tri"
     return
 end function
 

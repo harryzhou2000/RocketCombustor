@@ -13,3 +13,8 @@
 *.vtk
 *.geo
 *readgmsh
+*meshpre
+*PLT
+*.in*
+*.visit
+*.sav

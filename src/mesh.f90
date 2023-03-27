@@ -11,6 +11,7 @@ SUBROUTINE ReadMesh   ! MESH FLOW
     OPEN(5,FILE=filename,STATUS='OLD')
 !! Read mesh on cell-based format
     read(5,*) NE,NE_Vir, NNT,NNT_Vir,NF,NF_Vir
+    write(*,*) NE, " ", NE_Vir, "NE" 
     
     call allocate_cellandnode_arrary
     
@@ -43,6 +44,7 @@ SUBROUTINE ReadMesh   ! MESH FLOW
       allocate(tCon%ListS(2,tCon%NListS))
       read(5,*) ( tCon%ListR(1,ic),tCon%ListR(2,ic),ic=1,tCon%NListR )
       read(5,*) ( tCon%ListS(1,ic),tCon%ListS(2,ic),ic=1,tCon%NListS )
+      write(*,*) NConE, "Here" 
     enddo
     
 !! read boundary infomation
@@ -123,13 +125,13 @@ end subroutine
       !! create faces
       Neighbor(:,:)= -100
 
-      i=0  !! i ÓÃÀ´¼Ç±ßµÄÀÛÔöÁ¿
+      i=0  !! i ï¿½ï¿½ï¿½ï¿½ï¿½Ç±ßµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
       do j=1,NE_Vir
       if( mod(j,10000)==0 ) write(*,*) 'cell j:',j
         do kf=1,KFace(j)
          n1= N(kf,j)
          n2= N(mod(kf,KFace(j))+1,j)
-         call face(n1,n2,i,j )  !¶ÔµÚkfÌõ±ß
+         call face(n1,n2,i,j )  !ï¿½Ôµï¿½kfï¿½ï¿½ï¿½ï¿½
         enddo
         if( j==NE ) numofface= i
       enddo
@@ -158,7 +160,7 @@ subroutine face(n1,n2,i,j)
 
       if( IndexFace .eq. 0) then         
         i=i+1
-        neighbor(1,i)=j     !! ÒòÎªjµ¥ÔªÊÇÄæÊ±Õë°²ÅÅ¶¥µã£¬then cell j is side right cell
+        neighbor(1,i)=j     !! ï¿½ï¿½Îªjï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½Ê±ï¿½ë°²ï¿½Å¶ï¿½ï¿½ã£¬then cell j is side right cell
         vecx(1,i)=  coor(2,n2)-coor(2,n1)  !! vector of side i
         vecx(2,i)=-(coor(1,n2)-coor(1,n1))
 
@@ -220,6 +222,7 @@ subroutine VolumeAndCenter
        
 
       vol(i)= GaussInteg_Quad(fun, xv1,xv2,xv3,xv4)
+      ! write(*,*) xv1, xv2, xv3, xv4, " Vol Coords: ", vol(i)
       cellxy(:,i)= (/ GaussInteg_Quad(funx, xv1,xv2,xv3,xv4)/vol(i), &
                      GaussInteg_Quad(funy, xv1,xv2,xv3,xv4)/vol(i) /)
 
