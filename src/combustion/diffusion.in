@@ -1,0 +1,7 @@
+# Boltzmann's constant k_B (m2*kg*s-2*K-1)
+1.38064852E-23
+# hard-sphere collision diameter sigma (A), Lennard-Jones energy epsilon/k_B (K)
+3.758, 148.6
+3.467, 106.7
+3.941, 195.2
+2.641, 809.1

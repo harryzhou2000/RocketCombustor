@@ -1,0 +1,9 @@
+# fuel mass fraction
+1.
+0.
+0.
+0.
+# temperature (K), pressure (K)
+300.0, 2.0e6
+# mass flow rate (kg/s)
+0.37
