@@ -12,9 +12,10 @@
 *.msh
 *.vtk
 *.geo
-*readgmsh
-*meshpre
+*readgmsh*
+*meshpre*
 *PLT
 *.in*
 *.visit
 *.sav
+*.exe
