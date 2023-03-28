@@ -40,7 +40,7 @@ $(PROGRAM): module.f90 \
 			Time_BackwardEuler.f90 \
 			Time_ImplicitMidpoint.f90 \
 			Time_BDF2.f90
-	mpifort -o $@ $^ -O3 -lblas -llapack -fdefault-double-8 -fdefault-real-8 
+	mpif90 -o $@ $^ -O3 -lblas -llapack -fdefault-double-8 -fdefault-real-8 
 # mpiifort -lblas -llapcak -O3 -autodouble -fpconstant -o $@ $^
 # mpifort -o $@ $^ -O3 -lblas -llapack -fdefault-double-8 -fdefault-real-8 
 	

@@ -3,17 +3,17 @@
 # IfRightDomain
 .false.
 # NPreviousPar
-4
+16
 # Npar, number of processors
-4
+16
 # unit
 1.0
 # IfSteady, IfViscous, IfReadBackup, IfExplicit
-.false., .true., .false., .false.
+.false., .true., .true., .false.
 # implicit_time_method: 1-> Implicit Runge-Kutta, 2-> Trapezoidal, 3-> Euler, 4-> Midpoint, 5-> BDF2
 5
 # cfl,totaltime,nstep_max,save_start_time, save_end_time
-0.1, 0.1, 3000000, 0.0, 0.1
+10, 5.0e-3, 50000, 0.0, 0.5
 # IfFixDt
 .false.
 # InLoop, InnerLoop, relTol

@@ -27,10 +27,10 @@ subroutine inner_iteration_residual(istep,inner_rk,RoRes)
     include 'mpif.h'
     integer, parameter:: iofile= 777
     integer,save:: isave=0
-    double precision:: Res(Nvar),RoRes,Res_sum(Nvar),Romax,Romax_All
+    double precision:: Res(Nvar),RoRes(1),Res_sum(Nvar),Romax(1),Romax_All(1)
     integer:: istep,inner_rk,ierr
 
-    call Residual(Res, Romax)
+    call Residual(Res, Romax(1))
     call MPI_AllReduce(Res,Res_sum,Nvar,MPI_DOUBLE_PRECISION,MPI_SUM,MPI_COMM_WORLD,ierr)
     call MPI_AllReduce(Romax,Romax_All,1,MPI_DOUBLE_PRECISION,MPI_MAX,MPI_COMM_WORLD,ierr)
 
@@ -65,10 +65,10 @@ subroutine step_residual(istep,cputime,RoRes)
     include 'mpif.h'
     integer, parameter:: iofile= 666
     integer,save:: isave=0
-    double precision:: Res(Nvar),Res_sum(Nvar),Romax,Romax_All,RoRes,cputime
+    double precision:: Res(Nvar),Res_sum(Nvar),Romax(1),Romax_All(1),RoRes(1),cputime
     integer:: istep,ierr
 
-    call Residual(Res,Romax)
+    call Residual(Res,Romax(1))
     call MPI_AllReduce(Res,Res_sum,Nvar,MPI_DOUBLE_PRECISION,MPI_SUM,MPI_COMM_WORLD,ierr)
     call MPI_AllReduce(Romax,Romax_All,1,MPI_DOUBLE_PRECISION,MPI_MAX,MPI_COMM_WORLD,ierr)
 
