@@ -1,19 +1,19 @@
-# If_turn_on_combustion
+# If_turn_on_combustion, chemical model
 .true.
 # IfRightDomain
 .false.
 # NPreviousPar
-16
+4
 # Npar, number of processors
-16
+4
 # unit
 1.0
 # IfSteady, IfViscous, IfReadBackup, IfExplicit
-.false., .true., .true., .false.
+.false., .true., .false., .false.
 # implicit_time_method: 1-> Implicit Runge-Kutta, 2-> Trapezoidal, 3-> Euler, 4-> Midpoint, 5-> BDF2
 5
 # cfl,totaltime,nstep_max,save_start_time, save_end_time
-10, 5.0e-3, 50000, 0.0, 0.5
+10, 5.0e-3, 500000, 0.0, 0.5
 # IfFixDt
 .false.
 # InLoop, InnerLoop, relTol
@@ -27,8 +27,8 @@
 # number of monitor points
 3
 # x_monitor_point, y_monitor_point
-1.e-5,0.022
-0.050001,0.022
-0.095,0.022
+0,0
+1,0
+1,0
 # exit pressure ratio, A_p, f_p
 0.5, 0., 5000.0

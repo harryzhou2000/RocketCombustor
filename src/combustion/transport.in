@@ -1,5 +1,5 @@
 # transport_lowest_tem,transport_critical_tem,transport_highest_tem
-300.0, 1000.0, 5000.0
+200.0, 1000.0, 50000.0
 # low_mu_A,low_mu_B,low_mu_C,low_mu_D
 0.57388074E0, -0.98544160E2,  0.20012204E4,  0.17536015E1
 0.65074534E0,  0.23936771E2, -0.22020183E5,  0.11244058E1

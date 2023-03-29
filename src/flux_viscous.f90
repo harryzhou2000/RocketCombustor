@@ -167,6 +167,11 @@ subroutine flux_viscous
           rr= rl; pr= pl; tr=tl
           ur= ul; vr= vl
           Yr= Yl; Cpr= Cpl; Rcpcvr= Rcpcvl; gamar= gamal
+        elseif( NR== -7 )then !! special for induced 
+          call removedirection(ul,vl,sav1n,sav2n)
+          rr= rl; pr= 2.0e6; tr=700
+          ur= -100; vr= 0
+          Yr= Yl; Cpr= Cpl; Rcpcvr= Rcpcvl; gamar= gamal
 
         else
           rr= rl; pr= pl; tr= tl

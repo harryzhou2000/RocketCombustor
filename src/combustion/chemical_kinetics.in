@@ -1,13 +1,13 @@
 # number of reactions
-1
+1, 1
 # forwar reaction coefficient, reverse reaction coefficient
-1., 0.
 2., 0.
-0., 1.
+1., 0.
 0., 2.
+0., 0.
 # pre-exponential factor, temperature exponent, activation energy (J)
 2.12e11, 0., 2.025e5
-# entropy change, enthalpy change
+# entropy change, enthalpy change unused?
 0., 0.
 # p_a
 1.0e5

@@ -3,7 +3,7 @@
 !!-------------------------------
 module chemical_kinetics
     implicit none
-    
+    integer:: code_chemical_model
     integer:: Nreact
     double precision,allocatable:: coef_f_react(:,:),coef_r_react(:,:),&
                                    Af_react(:),beta_react(:),E_react(:),&
@@ -27,23 +27,23 @@ subroutine setup_chemical_kinetics
     write(*,*) 'reading chemical kinetics info ...'
     
     read(iofile,*) 
-    read(iofile,*) Nreact
+    read(iofile,*) Nreact, code_chemical_model
 
     call allocate_chemical_kinetics_array
 
-    read(iofile,*) 
+    read(iofile,*) ! reaction Konstant coefficients f/r
     do i=1,Nreact
         do j=1,Nsp
             read(iofile,*) coef_f_react(j,i),coef_r_react(j,i)
         enddo
     enddo
 
-    read(iofile,*) 
+    read(iofile,*) ! reaction k's formula constants Af beta E
     do i=1,Nreact
         read(iofile,*) Af_react(i),beta_react(i),E_react(i)
     enddo
 
-    read(iofile,*) 
+    read(iofile,*) ! ? used ?
     do i=1,Nreact
         read(iofile,*) dentropy_react(i), denthalpy_react(i)
     enddo
@@ -106,7 +106,7 @@ end subroutine
 !     return
 ! end subroutine
 
-subroutine compute_production_rate(T,rho,Y2,production_rate)
+subroutine compute_production_rate(T,rho,Y2,production_rate) ! ! warning, implemented specially
     use species
     use chemical_kinetics
     implicit none
@@ -118,7 +118,10 @@ subroutine compute_production_rate(T,rho,Y2,production_rate)
     Y= max(0.,Y)
     Y= min(1.,Y)
 
-    ! do j=1,Nreact
+    
+
+    if (code_chemical_model == 0) then
+        ! do j=1,Nreact
 
         kf_react= Af_react(1)*exp(-E_react(1)/(Rconstant*T))
 
@@ -135,10 +138,28 @@ subroutine compute_production_rate(T,rho,Y2,production_rate)
         !write(*,*) Y(1),Y(2),rho,mole_weight(1),mole_weight(2)
         ! write(*,*) 'kf_react=' kf_react
     ! enddo
+    elseif (code_chemical_model == 1) then
+        kf_react = 0.0
+        if (T > 710.0) then
+            kf_react = 1e4
+            ! write(*,*) "T hit"
+        endif
+        kf_react = kf_react * (Y(1)*rho/(mole_weight(1)*1000)) ** 1.0
+        kf_react = kf_react * (Y(2)*rho/(mole_weight(2)*1000)) ** 0.0
+        ! write(*,*) "Y1 Y2 mole den"
+        ! write(*,*) Y(1)*rho/(mole_weight(1)*1000)
+        ! write(*,*) Y(2)*rho/(mole_weight(2)*1000)
+        react_rate(1)= kf_react
+    else
+        write(*,*) "No such code_chemical_model"
+
+        stop 
+    endif
 
      do ks=1,Nsp
         production_rate(ks)= 1000*mole_weight(ks)*(coef_r_react(ks,1)-coef_f_react(ks,1))*react_rate(1)
      enddo
+    !  write(*,*) kf_react, production_rate
 
     return
 end subroutine
@@ -189,18 +210,42 @@ subroutine compute_derivative_production_rate(pri,dwdp)
         drdy(i)= -(R_species(i)-R_species(Nsp))*rho/Rcpcv
         enddo
 
-        dter1_dr=  0.2*rho**(-0.8)*dr1dr**(0.2)  !0.2*(r1**(-0.8))*dr1dr
+        if(code_chemical_model == 0) then
 
-        dkfdr= af*( (r1**0.2)*1.3*(r2**0.3)*dr2dr +  dter1_dr*(r2**1.3) )
+            dter1_dr=  0.2*rho**(-0.8)*dr1dr**(0.2)  !0.2*(r1**(-0.8))*dr1dr
 
-        dkfdp= dkfdr*drdp
-        dkfdu= 0.
-        dkfdv= 0.
-        dkfdT= af*(r1**0.2)*(r2**1.3)*E_react(1)/(Rconstant*T*T) + dkfdr*drdT
-        
-        dkfdy(1)=  af*0.2*(r1**(-0.8))*dr1dy1*(r2**1.3) + dkfdr*drdy(1)
-        dkfdy(2)=  af*(r1**0.2)*1.3*(r2**0.3)*dr2dy2 + dkfdr*drdy(2)
-        dkfdy(3:)= dkfdr*drdy(3:)
+            dkfdr= af*( (r1**0.2)*1.3*(r2**0.3)*dr2dr +  dter1_dr*(r2**1.3) )
+
+            dkfdp= dkfdr*drdp
+            dkfdu= 0.
+            dkfdv= 0.
+            dkfdT= af*(r1**0.2)*(r2**1.3)*E_react(1)/(Rconstant*T*T) + dkfdr*drdT
+            
+            dkfdy(1)=  af*0.2*(r1**(-0.8))*dr1dy1*(r2**1.3) + dkfdr*drdy(1)
+            dkfdy(2)=  af*(r1**0.2)*1.3*(r2**0.3)*dr2dy2 + dkfdr*drdy(2)
+            dkfdy(3:)= dkfdr*drdy(3:)
+
+        elseif(code_chemical_model == 1) then
+            af = 0.0
+            if (T > 710.0) then
+                af = 1e4
+            endif
+
+            dter1_dr=  1*rho**(0)*dr1dr**(1)
+
+            dkfdr= af*( (r1**1)*0*(r2**0)*dr2dr +  dter1_dr*(r2**0) )
+
+            dkfdp= dkfdr*drdp
+            dkfdu= 0.
+            dkfdv= 0.
+            dkfdT= 0.
+            
+            dkfdy(1)=  af*1*(r1**(0))*dr1dy1*(r2**0) + dkfdr*drdy(1)
+            dkfdy(2)=  af*(r1**1)*0*(r2**0)*dr2dy2 + dkfdr*drdy(2)
+        else
+            write(*,*) "No such code_chemical_model"
+            stop 
+        endif
 
         dkf=(/ dkfdp,dkfdu,dkfdv,dkfdT,dkfdy/)
     endif

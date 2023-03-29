@@ -88,7 +88,7 @@ subroutine compute_diffusion_velocity(pp,tem,YY,Dk)
       ! Dk(i)= (1.-XX(i))/(sum(XX(:)/Dij(:))-XX(i)/Dij(i) + epsilon)
 
       xdsum=0.
-      do j=1,i-1
+      do j=1,i-1 ! excluding j == i
         xdsum= xdsum + XX(j)/Dij(j)
       enddo
 

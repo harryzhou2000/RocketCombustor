@@ -102,6 +102,8 @@ subroutine ComputeGasParameter(Y, tem, Cp, gama, Rcpcv)
 
     Cp   = sum(Cp_species(:)*Y(:))
 
+    ! write(*,*) "CP" , Cp
+
     Rcpcv= sum(R_species(:)*Y(:))
 
     gama = Cp/(Cp-Rcpcv) 

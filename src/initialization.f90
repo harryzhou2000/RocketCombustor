@@ -3,6 +3,7 @@ subroutine initialization
     use species
     use fuel
     use oxidizer
+    use chemical_kinetics
     implicit none
     integer:: i
     double precision, parameter:: length_step= 1.01e-02,diameter_chamber= 4.4e-02
@@ -49,6 +50,7 @@ subroutine initialization
     pp= p_out
     rr= pp/(Rcpcv*tt)
     oxidizer_velocity= oxidizer_mass_flow/rr
+    
 
     write(*,*) 'oxidizer_velocity=',oxidizer_velocity
        
@@ -123,6 +125,17 @@ subroutine initialization
             tt= reactant_temperature
             uu= reactant_velocity
             vv= 0.
+
+            if (code_chemical_model == 1) then
+                uu = -400.
+                tt = 700.
+                pp = 2e5
+                vv = 0.
+                YY(:) = oxidizer_mass_fraction(:)
+                ! write(*,*) oxidizer_mass_fraction(:)
+                ! write(*,*) " "
+            endif
+            
             
         endif
         PA(1,i)= pp
