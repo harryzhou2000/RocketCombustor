@@ -126,7 +126,7 @@ subroutine initialization
             uu= reactant_velocity
             vv= 0.
 
-            if (code_chemical_model == 1) then
+            if (code_chemical_model == 1) then ! ! special
                 uu = -400.
                 tt = 700.
                 pp = 2e5

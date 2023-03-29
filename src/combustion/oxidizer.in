@@ -1,8 +1,8 @@
 # oxidizer mass fraction
-0.1
-0.8
+0.0127
+0.1013
 0.
-0.1
+0.8861
 # temperature (K), pressure (K)
 700.0, 2.0e6
 # mass flow rate (kg/s)
